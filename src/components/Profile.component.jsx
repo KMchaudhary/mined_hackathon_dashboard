@@ -68,7 +68,7 @@ export default function Profile() {
                 </div>
               </div>
               <div className="flex justify-end my-4">
-                <button className="px-3 py-2 font-semibold bg-slate-500 text-white hover:bg-slate-600 rounded-lg mr-3" type="submit">Reset</button>
+                <button className="px-3 py-2 font-semibold bg-slate-500 text-white hover:bg-slate-600 rounded-lg mr-3" type="Reset">Reset</button>
                 <button className="px-3 py-2 font-semibold bg-green-500 text-white hover:bg-green-600 rounded-lg" type="submit">Save Changes</button>
               </div>
             </form>

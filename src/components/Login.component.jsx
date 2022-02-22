@@ -1,11 +1,15 @@
+import axios from 'axios';
 import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../MINeD_LOGO.png';
 
 export default function Login() {
   const [inputs, setInputs] = useState({});
   const [showPass, setShowPass] = useState(false);
+  const [message, setMessage] = useState("");
   const passwordEl = useRef();
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
       const name = e.target.name;
@@ -21,24 +25,25 @@ export default function Login() {
           return;
       }
 
-      const url = 'http://localhost:8000/api/users/signup';
-      fetch(url, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(inputs)
+      const url = 'http://localhost:8000/api/users/login';
+
+      axios.post(url, {
+          email: inputs.email, 
+          password: inputs.password
       })
-          .then(res => {
-              if(!res.ok) {
-                  throw Error('Server can not fetch data from that resource!');
-              }
-              return res.json();
-          })
-          .then(data => {
-              localStorage.setItem('token', data.token);
-          })
-          .catch(err => {
-              console.error(err);
-          })
+      .then(res => {
+        const data = res.data;
+        if(data.status === 'success') {
+            localStorage.setItem('user_token', data.token);
+            navigate('/myReg');
+        }
+      })
+      .catch(err => {
+          const data = err.response.data;
+          if(data.status === 'fail') {
+            setMessage(data.message);
+          }        
+      })
   }
 
   return (
@@ -50,9 +55,12 @@ export default function Login() {
 
                 <h4 className="text-lg text-slate-400 font-semibold mb-3">Log In</h4>
 
-                <div className="message max-w-[400px] w-full p-4 text-red-500 border border-red-500 rounded-lg mb-3">
-                    Wrong email or password!
-                </div>
+                {
+                    (message !== "") &&
+                    <div className="message max-w-[400px] w-full p-4 text-red-500 border border-red-500 rounded-lg mb-3">
+                        Wrong email or password!
+                    </div>
+                }
 
 
                 <div className="border rounded-lg max-w-[400px] w-full p-4 bg-slate-800 text-slate-400 drop-shadow">

@@ -1,19 +1,64 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function Hackathon() {
+  const [hackathon, setHackathon] = useState();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+
+    const url = 'http://localhost:8000/api/my_reg/reg/hackathon';
+    const source = axios.CancelToken.source();
+    const options = {
+      cancelToken: source.token,
+      headers: {
+        'authorization': `Bearer ${localStorage.getItem('user_token')} ${localStorage.getItem('reg_token')}`
+      }
+    }
+
+    axios.get(url, options)
+      .then(res => {
+        const data = res.data;
+        console.log(data);
+        setHackathon(data)
+      })
+      .catch(err => {
+        if (axios.isCancel(err))
+          return console.log('successfully aborted');
+                
+        // handle error
+        const res = err.response;
+        if((res.data.status === 'fail' && res.status === 403) || res.data.error.name === 'JsonWebTokenError') {
+          localStorage.clear();
+          navigate('/login');
+        }
+      });
+  
+    return () => {
+      // cancel the request before component unmounts
+      source.cancel();
+    }
+  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <>
       {/* Hackathon */}
       <div className="hackathon text-slate-300">
         <h1 className="text-white text-center text-2xl font-semibold py-2 mb-4"><span className="py-2 border-b-4">Hackathon</span></h1>
 
-        <div className="wrapper my-8">
-          <div className="ht-title mb-3">👉 Mined Hackathon 202</div>
-          <p className="ht-description mb-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati optio possimus quam, nam nulla, dolorum distinctio omnis non id earum delectus modi aperiam! Perspiciatis tempore autem, nobis culpa perferendis voluptatem est officiis eveniet impedit voluptates accusantium sit quasi corrupti beatae eligendi voluptate officia sapiente laudantium blanditiis sunt repellat tenetur delectus!</p>
-          <div className="mb-3">
-            <div className="font-bold">Team size <span className="ml-3 text-blue-400 font-semibold">3 - 5 members</span></div>
+        { hackathon && 
+          <div className="wrapper my-8">
+            <div className="ht-title mb-3">👉 {hackathon.title}</div>
+            <p className="ht-description mb-3">{hackathon.description}</p>
+            <div className="mb-3">
+              <div className="font-semibold mb-2">Team size <span className="ml-3 text-blue-400 font-semibold">3 - 5 members</span></div>
+              <div className="font-semibold mb-2">Hackathon registration status :<span className="ml-3 text-blue-400 font-semibold">{hackathon.enableRegistration ? 'Open' : 'Close'}</span></div>
+              <div className="font-semibold mb-2">Hackathon team generation status :<span className="ml-3 text-blue-400 font-semibold">{hackathon.enableTeamGeneration ? 'Open' : 'Close'}</span></div>
+            </div>
           </div>
-        </div>
+        }
       </div>
     </>
   )

@@ -18,16 +18,20 @@ nav .nav-item-red {
   @apply max-w-screen-xl lg:max-w-screen-md md:max-w-screen-sm mx-auto;
 }
 
+.container {
+  @apply max-w-screen-2xl 2xl:max-w-screen-xl lg:max-w-screen-lg md:max-w-screen-md sm:max-w-screen-sm mx-auto;
+}
+
 .ps-title {
   @apply text-lg text-white font-semibold tracking-wider ml-2;
 }
 
 .ps-body {
-  @apply text-slate-400 font-normal ml-2;
+  @apply text-slate-400 font-normal ml-2 tracking-wider;
 }
 
 .ht-title {
-  @apply text-lg text-white tracking-wider;
+  @apply text-lg font-semibold text-white tracking-wide;
 }
 
 .input-el {
