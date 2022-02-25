@@ -25,8 +25,8 @@ export default function PublicTeams() {
     axios.get(url, options)
       .then(res => {
         const data = res.data;
-        console.log(data);
         setPublicTeams(data)
+        setFinishUseEffect(true);
       })
       .catch(err => {
         if (axios.isCancel(err))
@@ -36,8 +36,9 @@ export default function PublicTeams() {
         const res = err.response;
         if((res.data.status === 'fail' && res.status === 403) || res.data.error.name === 'JsonWebTokenError') {
           localStorage.clear();
-          navigate('/login');
+          navigate('/myReg');
         }
+        setFinishUseEffect(true)
       });
   
     return () => {
@@ -57,7 +58,7 @@ export default function PublicTeams() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                   {
-                    (publicTeams) &&
+                    (publicTeams && finishUseEffect) &&
                     publicTeams.map(team => (
                       <SimpleTeamCard key={team.id} team={team} />
                     ))
