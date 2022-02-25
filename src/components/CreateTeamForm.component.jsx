@@ -11,8 +11,8 @@ export default function CreateTeamForm({clearChoice, problemStatements}) {
         allowAutoMemberAssign: false
     });
     const [message, setMessage] = useState("");
-
     const navigate = useNavigate();
+    const baseURL = process.env.NODE_ENV === "production" ? 'https://apis.mined2022.tech' : 'http://localhost:8000';
 
     const handleChange = (e) => {
         const name = e.target.name;
@@ -29,27 +29,26 @@ export default function CreateTeamForm({clearChoice, problemStatements}) {
         }
         const data = inputs;
         
-        const url = 'http://localhost:8000/api/my_reg/reg/myTeam/create';
+        const url = baseURL + '/api/my_reg/reg/myTeam/create';
         const options = {
-        headers: {
-            'authorization': `Bearer ${localStorage.getItem('user_token')} ${localStorage.getItem('reg_token')}`
-        }
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('user_token')} ${localStorage.getItem('reg_token')}`
+            }
         }
 
         axios.post(url, data, options)
         .then(res => {
             const data = res.data;
             if(data.status === "success") {
-            window.location.reload();
+                window.location.reload();
             }
-            
         })
         .catch(err => {                
             // handle error
             const res = err.response;
             if((res.data.status === 'fail' && res.status === 403) || (res.data.error && res.data.error.name === 'JsonWebTokenError')) {
-            localStorage.clear();
-            navigate('/login');
+                localStorage.clear();
+                navigate('/login');
             }
 
             if(res.data.status === 'fail') {

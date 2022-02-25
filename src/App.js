@@ -12,6 +12,9 @@ import Requests from './components/Requests.component';
 import MyRegistrations from './components/MyRegistrations.component';
 import NotFound from './components/NotFound.component';
 import ProtectedRoute from './ProtectedRoute';
+import SearchTeam from './components/SearchTeam.component';
+import ChangePassword from './components/ChangePassword.component';
+import ForgotPassword from './components/ForgotPassword.component';
 
 function App() {
   return (
@@ -21,6 +24,8 @@ function App() {
           <h1 className="text-lg">Home</h1>
         }/>
         <Route path="/login" element={<Login />} />
+        <Route path="/user/forgot" element={<ForgotPassword />} />
+        <Route path="/user/changePassword/:confirmationCode" element={<ChangePassword />} />
 
         <Route element={<ProtectedRoute />}>
           <Route path="/myReg" element={<MyRegistrations />} />
@@ -31,10 +36,10 @@ function App() {
             <Route path="problemStatements" element={<ProblemStatements />} />
             <Route path="myTeam" element={<MyTeam />} />
             <Route path="publicTeams" element={<PublicTeams />} />
+            <Route path="searchTeam" element={<SearchTeam />} />
             <Route path="requests" element={<Requests />} />
           </Route>
-        </Route>
-        
+        </Route>        
 
         <Route path="*" element={<NotFound />} />
       </Routes>

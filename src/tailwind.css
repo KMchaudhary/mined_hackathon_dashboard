@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+button {
+  @apply select-none;
+}
+
 nav .active-tab {
   @apply bg-slate-900 text-white font-semibold border-x-2 sm:border-y-2 sm:border-x-0 border-dashed;
 }
@@ -36,4 +40,26 @@ nav .nav-item-red {
 
 .input-el {
   @apply w-full px-3 py-2 rounded-lg bg-slate-100 text-slate-900 font-semibold outline-none focus:ring-blue-500 focus:ring;
+}
+
+.title-guid {
+  @apply relative;
+}
+
+.title-guid-text-left {
+  @apply hidden absolute top-0 right-6 p-1 bg-slate-300 bg-opacity-90 font-semibold rounded-lg text-slate-800 text-sm whitespace-nowrap transition;
+}
+
+.title-guid:hover .title-guid-text-left {
+  @apply inline-block;
+}
+
+.dot {
+  @apply inline-block mb-1 mx-3 w-1 h-1 rounded-full;
+}
+
+.main-title::after {
+  width: 100%;
+  height: 4px;
+  background-color: #fff;
 }

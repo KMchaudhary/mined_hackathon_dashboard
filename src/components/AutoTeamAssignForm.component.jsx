@@ -8,6 +8,8 @@ export default function AutoTeamAssignForm({clearChoice, problemStatements}) {
     const [psId, setPsId] = useState("");
     const navigate = useNavigate();
 
+    const baseURL = process.env.NODE_ENV === "production" ? 'https://apis.mined2022.tech' : 'http://localhost:8000';
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if(psId.trim() === "") {
@@ -16,7 +18,7 @@ export default function AutoTeamAssignForm({clearChoice, problemStatements}) {
             return;
         }
 
-        const url = 'http://localhost:8000/api/my_reg/reg/myTeam/autoAssign';
+        const url = baseURL + '/api/my_reg/reg/myTeam/autoAssign';
         const options = {
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('user_token')} ${localStorage.getItem('reg_token')}`
@@ -101,12 +103,12 @@ export default function AutoTeamAssignForm({clearChoice, problemStatements}) {
                         
                         <div className="flex flex-row justify-end">
                         <button 
-                            className="px-3 py-2 font-semibold bg-slate-500 text-white hover:bg-slate-600 rounded-lg mr-3"
+                            className="px-3 py-2 font-semibold bg-slate-500 text-white hover:bg-slate-600 rounded-lg mr-3 focus:ring-slate-400 focus:ring"
                             onClick={clearChoice}
                         >Close</button>
 
                         <input 
-                            className="px-3 py-2 font-semibold bg-blue-500 text-white hover:bg-blue-600 rounded-lg" 
+                            className="px-3 py-2 font-semibold bg-blue-500 text-white hover:bg-blue-600 rounded-lg focus:ring-blue-500 focus:ring" 
                             type="submit" 
                             value="Submit" />
                         </div>
