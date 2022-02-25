@@ -34,7 +34,7 @@ export default function Profile() {
         // handle error
         const res = err.response;
         if((res.data.status === 'fail' && res.status === 403) || res.data.error.name === 'JsonWebTokenError') {
-          localStorage.clear();
+          localStorage.setItem('reg_token', '');
           navigate('/myReg');
         }
       });

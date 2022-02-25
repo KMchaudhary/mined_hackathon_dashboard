@@ -15,17 +15,19 @@ import ProtectedRoute from './ProtectedRoute';
 import SearchTeam from './components/SearchTeam.component';
 import ChangePassword from './components/ChangePassword.component';
 import ForgotPassword from './components/ForgotPassword.component';
+import VerifyAccount from './components/VerifyAccount.component';
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={
-          <h1 className="text-lg">Home</h1>
+          <Navigate to="/login" />
         }/>
         <Route path="/login" element={<Login />} />
+        <Route path="/user/verify/:confirmationCode" element={<VerifyAccount />} />
         <Route path="/user/forgot" element={<ForgotPassword />} />
-        <Route path="/user/changePassword/:confirmationCode" element={<ChangePassword />} />
+        <Route path="/user/changePassword/:confirmationCode" element={<ChangePassword />} />        
 
         <Route element={<ProtectedRoute />}>
           <Route path="/myReg" element={<MyRegistrations />} />
@@ -39,7 +41,7 @@ function App() {
             <Route path="searchTeam" element={<SearchTeam />} />
             <Route path="requests" element={<Requests />} />
           </Route>
-        </Route>        
+        </Route>
 
         <Route path="*" element={<NotFound />} />
       </Routes>
